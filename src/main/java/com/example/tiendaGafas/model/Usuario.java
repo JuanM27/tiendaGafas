@@ -28,7 +28,7 @@ import jakarta.persistence.Table;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "usuario")
+@Table(name="usuario")
 public class Usuario implements UserDetails {
 
     @Id
@@ -74,5 +74,9 @@ public class Usuario implements UserDetails {
     @Override
     public String getUsername() {
         return this.correo;
+    }
+    
+    public Integer getId() {
+    	return this.idUsuario;
     }
 }

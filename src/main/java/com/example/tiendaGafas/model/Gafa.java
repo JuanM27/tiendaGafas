@@ -5,6 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,8 +21,6 @@ import jakarta.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Getter
-@Setter
 @Entity
 @Table(name = "gafa")
 public class Gafa {
@@ -42,6 +44,7 @@ public class Gafa {
     private String imagen;
     
     @ManyToOne
+    @JsonIgnore
     private Usuario usuario;
 
     public Usuario getUsuario() {
@@ -50,6 +53,11 @@ public class Gafa {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+    
+    @JsonProperty("idUsuario")
+    public Integer getIdUsuario() {
+        return usuario != null ? usuario.getId() : null;
     }
 
 }

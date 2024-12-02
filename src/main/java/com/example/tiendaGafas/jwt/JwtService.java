@@ -3,11 +3,14 @@ package com.example.tiendaGafas.jwt;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Base64;
 
 
 import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +29,21 @@ public class JwtService {
         return getToken(new HashMap<>(), usuario);
     }
 
-    private String getToken(Map<String,Object> extraClaims, UserDetails usuario) {
+    private String getToken(Map<String, Object> extraClaims, UserDetails usuario) {
+        // Obtener roles del usuario y agregarlos a las claims
+        List<String> roles = usuario.getAuthorities().stream()
+                                    .map(authority -> authority.getAuthority())
+                                    .collect(Collectors.toList());
+        
+        // Agregar los roles al mapa de claims
+        extraClaims.put("roles", roles);
+
         return Jwts.builder()
             .setClaims(extraClaims)
-            .setSubject(usuario.getUsername())
-            .setIssuedAt(new Date(System.currentTimeMillis()))
-            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
-            .signWith(getKey(),SignatureAlgorithm.HS256)
+            .setSubject(usuario.getUsername()) // Establecer el correo como subject del token
+            .setIssuedAt(new Date(System.currentTimeMillis())) // Fecha de emisión
+            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24)) // Expiración (24 minutos)
+            .signWith(getKey(), SignatureAlgorithm.HS256) // Firma del token
             .compact();
     }
 

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.tiendaGafas.jwt.JwtService;
 import com.example.tiendaGafas.model.Role;
 import com.example.tiendaGafas.model.Usuario;
-import com.example.tiendaGafas.repository.UserRepository;
+import com.example.tiendaGafas.repository.UsuarioRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final UserRepository userRepository;
+    private final UsuarioRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
